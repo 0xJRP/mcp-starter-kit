@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>🐇 MCP Starter Kit — Playground</title>
+    <style>
+      :root {
+        --bg: #0f1115;
+        --panel: #171a21;
+        --panel-2: #1e222b;
+        --line: #2a2f3a;
+        --text: #e7e9ee;
+        --muted: #9aa3b2;
+        --accent: #7c5cff;
+        --accent-2: #00d49f;
+        --radius: 14px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: radial-gradient(1200px 600px at 80% -10%, #1b1640, var(--bg));
+        color: var(--text);
+        line-height: 1.5;
+      }
+      header {
+        padding: 28px 24px 8px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      header h1 { margin: 0; font-size: 22px; }
+      header p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+      .badge {
+        display: inline-block; font-size: 12px; color: var(--accent-2);
+        border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px;
+        margin-bottom: 10px;
+      }
+      main {
+        max-width: 1100px; margin: 0 auto; padding: 16px 24px 60px;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      }
+      @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+      .panel {
+        background: var(--panel); border: 1px solid var(--line);
+        border-radius: var(--radius); padding: 20px;
+      }
+      .panel h2 { margin: 0 0 4px; font-size: 16px; }
+      .panel .hint { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+      label { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 4px; }
+      input, textarea, select {
+        width: 100%; background: var(--panel-2); border: 1px solid var(--line);
+        color: var(--text); border-radius: 10px; padding: 10px 12px; font-size: 14px;
+        font-family: inherit;
+      }
+      input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      button {
+        cursor: pointer; border: none; border-radius: 10px; padding: 10px 16px;
+        font-size: 14px; font-weight: 600; color: #fff;
+        background: linear-gradient(135deg, var(--accent), #5b3cff);
+      }
+      button.secondary { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); }
+      button:active { transform: translateY(1px); }
+      .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+        background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+        border-radius: 999px; padding: 8px 14px; font-size: 13px;
+      }
+      .pill:hover { border-color: var(--accent); }
+      .out {
+        margin-top: 16px; background: #0c0e13; border: 1px solid var(--line);
+        border-radius: 10px; padding: 14px; min-height: 80px; white-space: pre-wrap;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px;
+        color: var(--accent-2);
+      }
+      .saved { color: var(--accent-2); font-size: 13px; height: 18px; margin-top: 8px; }
+      .group { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 6px; }
+      footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 24px 40px; }
+      footer a { color: var(--accent); }
+      code { background: var(--panel-2); padding: 1px 6px; border-radius: 6px; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="badge">🐇 Rabbithole · MCP Starter Kit</div>
+      <h1>Your AI, using your real business data.</h1>
+      <p>
+        Edit your info on the left. Try the tools on the right and see the
+        exact answers your AI will give. No coding. Nothing leaves your computer.
+      </p>
+    </header>
+
+    <main>
+      <!-- LEFT: edit business info -->
+      <section class="panel">
+        <h2>1 · Your business info</h2>
+        <p class="hint">This is what your AI will know. Edit it, then Save.</p>
+
+        <label>Business name</label>
+        <input id="name" />
+
+        <label>Tagline</label>
+        <input id="tagline" />
+
+        <div class="row">
+          <div><label>Phone</label><input id="phone" /></div>
+          <div><label>Email</label><input id="email" /></div>
+        </div>
+
+        <label>Address</label>
+        <input id="address" />
+
+        <label>Services &amp; prices <span class="hint">(name | price | unit, one per line)</span></label>
+        <textarea id="services" rows="4" placeholder="Latte | 4.50 | cup"></textarea>
+
+        <label>FAQs <span class="hint">(question | answer, one per line)</span></label>
+        <textarea id="faqs" rows="4" placeholder="Do you have wifi? | Yes, free for customers."></textarea>
+
+        <label>Open booking slots <span class="hint">(one per line)</span></label>
+        <textarea id="slots" rows="3" placeholder="Tomorrow 9:00am"></textarea>
+
+        <div class="toolbar">
+          <button id="save">💾 Save my info</button>
+          <button class="secondary" id="reload">Reload</button>
+        </div>
+        <div class="saved" id="savedMsg"></div>
+      </section>
+
+      <!-- RIGHT: try the tools -->
+      <section class="panel">
+        <h2>2 · Try it like a customer</h2>
+        <p class="hint">Click a question. This calls the real tool and shows the answer.</p>
+
+        <div class="toolbar">
+          <span class="pill" data-tool="get_business_info">📋 What are your hours?</span>
+          <span class="pill" data-tool="check_availability">📅 What times are open?</span>
+        </div>
+
+        <div class="group">
+          <label>💬 Ask an FAQ</label>
+          <div class="row">
+            <input id="faqQ" placeholder="Do you have wifi?" />
+            <button class="secondary" id="askFaq">Ask</button>
+          </div>
+        </div>
+
+        <div class="group">
+          <label>💲 Get a price quote</label>
+          <div class="row">
+            <input id="qService" placeholder="Latte" />
+            <input id="qQty" type="number" min="1" value="1" />
+          </div>
+          <div class="toolbar"><button class="secondary" id="quote">Calculate</button></div>
+        </div>
+
+        <div class="out" id="output">👋 Pick a question above to see your AI's answer.</div>
+      </section>
+    </main>
+
+    <footer>
+      Built by <strong>Rabbithole</strong> — Day 1 of 30 free AI kits for small business.
+      When this works, connect it to your AI app — see the <code>README</code>.
+    </footer>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const out = $("output");
+
+      function show(text, isError) {
+        out.textContent = text;
+        out.style.color = isError ? "#ff6b6b" : "var(--accent-2)";
+      }
+
+      // --- Load business.json into the form ---
+      async function load() {
+        const b = await (await fetch("/api/business")).json();
+        $("name").value = b.name || "";
+        $("tagline").value = b.tagline || "";
+        $("phone").value = b.phone || "";
+        $("email").value = b.email || "";
+        $("address").value = b.address || "";
+        $("services").value = (b.services || [])
+          .map((s) => `${s.name} | ${s.price} | ${s.unit}`)
+          .join("\n");
+        $("faqs").value = (b.faqs || []).map((f) => `${f.q} | ${f.a}`).join("\n");
+        $("slots").value = (b.appointment_slots || []).join("\n");
+      }
+
+      function parseLines(text, fn) {
+        return text
+          .split("\n")
+          .map((l) => l.trim())
+          .filter(Boolean)
+          .map(fn)
+          .filter(Boolean);
+      }
+
+      // --- Save the form back to business.json ---
+      async function save() {
+        const body = {
+          name: $("name").value.trim(),
+          tagline: $("tagline").value.trim(),
+          phone: $("phone").value.trim(),
+          email: $("email").value.trim(),
+          address: $("address").value.trim(),
+          hours: {}, // hours kept in business.json; edit there for full control
+          services: parseLines($("services").value, (l) => {
+            const [name, price, unit] = l.split("|").map((x) => x.trim());
+            if (!name) return null;
+            return { name, price: Number(price) || 0, unit: unit || "each" };
+          }),
+          faqs: parseLines($("faqs").value, (l) => {
+            const [q, ...a] = l.split("|");
+            if (!q?.trim()) return null;
+            return { q: q.trim(), a: a.join("|").trim() };
+          }),
+          appointment_slots: parseLines($("slots").value, (l) => l),
+        };
+        // Preserve hours that already exist
+        const existing = await (await fetch("/api/business")).json();
+        body.hours = existing.hours || {};
+
+        const res = await fetch("/api/business", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        const msg = $("savedMsg");
+        if (data.ok) {
+          msg.textContent = "✅ Saved! Try a question on the right →";
+          setTimeout(() => (msg.textContent = ""), 4000);
+        } else {
+          msg.textContent = "⚠️ " + (data.error || "Could not save");
+        }
+      }
+
+      // --- Call a tool and show the answer ---
+      async function callTool(name, args = {}) {
+        show("…thinking");
+        const res = await fetch("/api/tool/" + name, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(args),
+        });
+        const data = await res.json();
+        if (data.ok) show(data.result);
+        else show(data.error || "Something went wrong", true);
+      }
+
+      document.querySelectorAll(".pill").forEach((p) =>
+        p.addEventListener("click", () => callTool(p.dataset.tool))
+      );
+      $("askFaq").addEventListener("click", () =>
+        callTool("lookup_faq", { question: $("faqQ").value })
+      );
+      $("quote").addEventListener("click", () =>
+        callTool("price_quote", {
+          service: $("qService").value,
+          quantity: Number($("qQty").value) || 1,
+        })
+      );
+      $("save").addEventListener("click", save);
+      $("reload").addEventListener("click", load);
+
+      load();
+    </script>
+  </body>
+</html>

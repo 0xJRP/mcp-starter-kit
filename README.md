@@ -63,7 +63,22 @@ npm run check
 
 You should see ✅ **Your kit looks good!**
 
-### 4. Connect it to your AI
+### 4. Try it in your browser first (the fun part) 🎮
+Before touching any AI app, run:
+
+```bash
+npm run play
+```
+
+Then open **http://localhost:4321**. You'll get a simple page where you can:
+- **Edit your business info** in a form (no JSON, no code) and Save
+- **Try the tools live** — ask "What are your hours?", get a price quote,
+  look up an FAQ — and see the *exact* answers your AI will give
+
+This is the same logic the AI uses, so if it works here, it works there.
+Press `Ctrl+C` in Terminal to stop the playground.
+
+### 5. Connect it to your AI
 In **Claude Desktop**: Settings → Developer → Edit Config, and add this
 (change the path to where you unzipped the folder):
 
@@ -106,12 +121,12 @@ email)? That's exactly the kind of thing we build.
 
 ---
 
-## 🐇 Built by Rabbit Hole
+## 🐇 Built by Rabbithole
 
 We help small and medium businesses put AI to work — safely, and in plain
 English. This is **Day 1** of our 30-day series of free, working AI kits.
 
 **Want this set up for your business, with your real tools connected?**
-👉 [Reach out to Rabbit Hole](#) *(add your link)*
+👉 [Reach out to Rabbithole](#) *(add your link)*
 
 *Free to use under the MIT License. Built to be opened, edited, and run by real business owners.*

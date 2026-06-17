@@ -6,10 +6,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "play": "node playground.js",
     "check": "node server.js --check"
   },
   "keywords": ["mcp", "model-context-protocol", "ai", "small-business", "rabbit-hole"],
-  "author": "Rabbit Hole LLC",
+  "author": "Rabbithole LLC",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

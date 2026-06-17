@@ -1,34 +1,32 @@
 #!/usr/bin/env node
 /**
- * Rabbit Hole — MCP Starter Kit
+ * Rabbithole — MCP Starter Kit
  * ------------------------------------------------------------
  * A tiny, real MCP server that gives an AI assistant (like Claude
  * Desktop) safe, read-only access to YOUR business data.
  *
- * You don't have to understand the code. You just edit business.json,
- * run `npm start`, and connect it to your AI. The AI can then answer
- * customer questions, quote jobs, and check availability using your
- * real info — not made-up answers.
+ * You don't have to understand the code. You just edit business.json
+ * (or use the browser playground — run `npm run play`), then connect
+ * this to your AI. The AI can then answer customer questions, quote
+ * jobs, and check availability using your real info — not made-up answers.
  *
  * Everything runs on your own computer. Nothing is sent anywhere
  * except to the AI app you connect it to.
  * ------------------------------------------------------------
  */
 
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import {
+  loadBusiness,
+  getBusinessInfo,
+  priceQuote,
+  lookupFaq,
+  checkAvailability,
+} from "./tools.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// Load the business data. THIS is the file you edit with your own info.
-function loadBusiness() {
-  const raw = readFileSync(join(__dirname, "business.json"), "utf8");
-  return JSON.parse(raw);
-}
+const text = (t) => ({ content: [{ type: "text", text: t }] });
 
 // --- "--check" mode: a friendly self-test so a non-technical owner
 //     can confirm the kit works before wiring it into their AI. ---
@@ -39,7 +37,8 @@ if (process.argv.includes("--check")) {
     console.log(`   Business: ${b.name}`);
     console.log(`   Services loaded: ${b.services.length}`);
     console.log(`   FAQs loaded: ${b.faqs.length}`);
-    console.log("\nNext step: connect it to your AI app (see the README).");
+    console.log("\nTip: run `npm run play` to try it in your browser first,");
+    console.log("then connect it to your AI app (see the README).");
     process.exit(0);
   } catch (err) {
     console.error("❌ Something's off with business.json:");
@@ -53,7 +52,6 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
-// 1) Business info — hours, contact, address.
 server.registerTool(
   "get_business_info",
   {
@@ -62,31 +60,9 @@ server.registerTool(
       "Returns the business name, contact details, address, and opening hours. Use this to answer questions about the business itself.",
     inputSchema: {},
   },
-  async () => {
-    const b = loadBusiness();
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(
-            {
-              name: b.name,
-              tagline: b.tagline,
-              phone: b.phone,
-              email: b.email,
-              address: b.address,
-              hours: b.hours,
-            },
-            null,
-            2
-          ),
-        },
-      ],
-    };
-  }
+  async () => text(getBusinessInfo())
 );
 
-// 2) Price quote — calculate a total from the service list.
 server.registerTool(
   "price_quote",
   {
@@ -98,37 +74,9 @@ server.registerTool(
       quantity: z.number().min(1).default(1).describe("How many."),
     },
   },
-  async ({ service, quantity = 1 }) => {
-    const b = loadBusiness();
-    const match = b.services.find(
-      (s) => s.name.toLowerCase() === service.toLowerCase()
-    );
-    if (!match) {
-      const available = b.services.map((s) => s.name).join(", ");
-      return {
-        content: [
-          {
-            type: "text",
-            text: `No service named "${service}". Available: ${available}.`,
-          },
-        ],
-      };
-    }
-    const total = match.price * quantity;
-    return {
-      content: [
-        {
-          type: "text",
-          text: `${quantity} x ${match.name} @ $${match.price.toFixed(
-            2
-          )}/${match.unit} = $${total.toFixed(2)}`,
-        },
-      ],
-    };
-  }
+  async (args) => text(priceQuote(args))
 );
 
-// 3) FAQ lookup — answer common customer questions.
 server.registerTool(
   "lookup_faq",
   {
@@ -139,35 +87,9 @@ server.registerTool(
       question: z.string().describe("The customer's question."),
     },
   },
-  async ({ question }) => {
-    const b = loadBusiness();
-    const q = question.toLowerCase();
-    // Simple keyword scoring — good enough for a starter kit.
-    const scored = b.faqs
-      .map((f) => {
-        const words = f.q.toLowerCase().split(/\W+/).filter(Boolean);
-        const hits = words.filter((w) => q.includes(w)).length;
-        return { f, hits };
-      })
-      .sort((a, b) => b.hits - a.hits);
-    const best = scored[0];
-    if (!best || best.hits === 0) {
-      return {
-        content: [
-          {
-            type: "text",
-            text: "No matching FAQ found. Suggest the customer call or email the business.",
-          },
-        ],
-      };
-    }
-    return {
-      content: [{ type: "text", text: `Q: ${best.f.q}\nA: ${best.f.a}` }],
-    };
-  }
+  async (args) => text(lookupFaq(args))
 );
 
-// 4) Availability — list open appointment/booking slots.
 server.registerTool(
   "check_availability",
   {
@@ -176,22 +98,8 @@ server.registerTool(
       "Returns the currently open appointment or booking slots. Use this when a customer wants to book or asks what times are available.",
     inputSchema: {},
   },
-  async () => {
-    const b = loadBusiness();
-    const slots = b.appointment_slots || [];
-    return {
-      content: [
-        {
-          type: "text",
-          text: slots.length
-            ? "Open slots:\n- " + slots.join("\n- ")
-            : "No open slots right now.",
-        },
-      ],
-    };
-  }
+  async () => text(checkAvailability())
 );
 
-// Start listening over stdio — the standard way AI apps talk to MCP servers.
 const transport = new StdioServerTransport();
 await server.connect(transport);
