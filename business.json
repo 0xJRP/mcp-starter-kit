@@ -1,0 +1,35 @@
+{
+  "name": "Maple Street Coffee",
+  "tagline": "Small-batch coffee + fresh pastries in the heart of downtown.",
+  "phone": "(555) 012-3456",
+  "email": "hello@maplestreetcoffee.example",
+  "address": "12 Maple Street, Springfield",
+  "hours": {
+    "monday": "6:30am - 4:00pm",
+    "tuesday": "6:30am - 4:00pm",
+    "wednesday": "6:30am - 4:00pm",
+    "thursday": "6:30am - 4:00pm",
+    "friday": "6:30am - 6:00pm",
+    "saturday": "7:00am - 6:00pm",
+    "sunday": "Closed"
+  },
+  "services": [
+    { "name": "Drip Coffee", "price": 3.0, "unit": "cup" },
+    { "name": "Latte", "price": 4.5, "unit": "cup" },
+    { "name": "Catering Box (12 cups)", "price": 36.0, "unit": "box" },
+    { "name": "Pastry Platter", "price": 28.0, "unit": "platter" }
+  ],
+  "faqs": [
+    { "q": "Do you have wifi?", "a": "Yes — free wifi for customers. Ask at the counter for the password." },
+    { "q": "Do you do catering?", "a": "Yes! We cater meetings and events. Order our Catering Box or Pastry Platter at least 24 hours ahead." },
+    { "q": "Are you dog friendly?", "a": "Dogs are welcome on our patio." },
+    { "q": "Do you have oat milk?", "a": "Yes, we carry oat, almond, and whole milk at no extra charge." }
+  ],
+  "appointment_slots": [
+    "Tomorrow 9:00am",
+    "Tomorrow 11:30am",
+    "Tomorrow 2:00pm",
+    "Friday 10:00am",
+    "Friday 1:00pm"
+  ]
+}

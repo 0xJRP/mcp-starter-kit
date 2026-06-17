@@ -1,0 +1,18 @@
+{
+  "name": "mcp-starter-kit",
+  "version": "1.0.0",
+  "description": "A plain-English MCP starter kit for small businesses — connect your AI to your real business data.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node server.js --check"
+  },
+  "keywords": ["mcp", "model-context-protocol", "ai", "small-business", "rabbit-hole"],
+  "author": "Rabbit Hole LLC",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.8"
+  }
+}
