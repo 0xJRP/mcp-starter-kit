@@ -214,11 +214,10 @@
     <!-- PROGRESS -->
     <div class="progress">
       <div class="inner">
-        <div class="bar"><div class="fill" id="fill"></div></div>
         <div class="dots" id="dots"></div>
         <div class="meta">
           <span class="brand"><a href="https://rabbithole.consulting" target="_blank" rel="noopener">Rabbithole</a> · MCP Starter Kit</span>
-          <span id="stepLabel">01 / 06</span>
+          <span id="stepLabel">01 / 05</span>
         </div>
       </div>
     </div>
@@ -258,88 +257,46 @@
         <div class="nav"><span></span><button onclick="go(1)">Start →</button></div>
       </section>
 
-      <!-- STEP 2 — THE PROBLEM -->
-      <section class="step" data-step="1" data-icon="🧩" data-accent="#b54708">
-        <div class="eyebrow"><span class="num">02 / 06</span> · The problem</div>
-        <h1>"Can't I just <span class="serif">tell</span> the AI?"</h1>
-        <p class="lede">You can. Paste your info into a chat and it answers fine. So why bother with an MCP? Watch what "just telling it" actually costs.</p>
-        <div class="card">
-          <div class="chat" id="manualChat">
-            <div class="bubble user paste">
-              <span class="paste-label">📋 Pasted by you — at the start of every new chat</span>
-              Maple Street Coffee. Hours: Mon–Fri 6:30am–4pm, Fri til 6pm, Sat 7am–6pm, Sun closed. Latte $4.50, Drip $3, Catering box (12) $36, Pastry platter $28. Free wifi. Dog-friendly patio. Oat/almond milk free…
-            </div>
-            <div class="bubble user">What are your Saturday hours?</div>
-          </div>
-          <div style="margin-top:14px"><button class="demo-btn" id="manualBtn" onclick="runManual()">▶ See what happens</button></div>
+      <!-- STEP 2 — MCP vs API -->
+      <section class="step" data-step="1" data-icon="🔌" data-accent="#6941c6">
+        <div class="eyebrow"><span class="num">02 / 05</span> · MCP vs API</div>
+        <h1>"Isn't that just an <span class="serif">API?</span>"</h1>
+        <p class="lede">The #1 point of confusion — and a fair one. APIs and MCPs are related, but built for completely different users. Here's the difference in plain terms.</p>
+        <div class="card soft">
+          <p style="margin:0 0 10px; font-size:15.5px">An <b>API</b> is how one piece of software talks to another. Powerful — but every API is different, and a <b>developer</b> has to write custom code to connect each one.</p>
+          <p style="margin:0; font-size:15.5px">An <b>MCP</b> wraps that same software in <b>one standard language built for AI</b>. The AI is simply handed the list of available tools and how to use them — no custom code per app.</p>
         </div>
-        <div class="takeaway" id="manualTake" style="display:none">
-          <b>It answered right — but only because <span class="serif">you</span> fed it everything, by hand, this one time.</b> Tomorrow's chat? Paste it all again. Raised your prices? It won't know. Your new hire's AI, or a customer's? They have none of it.
-        </div>
-        <div class="card" id="mcpCard" style="display:none; border-top: 3px solid var(--navy-2); margin-top:14px">
-          <h2 style="font-size:17px; margin-bottom:8px">Now attach your <b>MCP</b> instead</h2>
-          <ul class="ticks" style="font-size:15px">
-            <li><span class="ok">✓</span> Connect <b>once</b> — any agent reads it, no pasting</li>
-            <li><span class="ok">✓</span> Always <b>current</b> — it reads your live data every time</li>
-            <li><span class="ok">✓</span> Knows <b>everything</b> — hours, prices, availability, and more</li>
-            <li><span class="ok">✓</span> Works for <b>anyone's</b> agent — staff, customers, partners</li>
-          </ul>
-          <p style="margin:12px 0 0; font-size:15px">That's the shift: an MCP isn't a one-time answer you type — it's a <span class="serif">live, reusable connection</span> to everything about your business that any AI can plug into.</p>
-        </div>
-        <div class="nav"><button class="ghost" onclick="go(0)">← Back</button><button onclick="go(2)">See how it connects →</button></div>
-      </section>
-
-      <!-- STEP 3 — THE BIG IDEA -->
-      <section class="step" data-step="2" data-icon="⚡" data-accent="#6941c6">
-        <div class="eyebrow"><span class="num">03 / 06</span> · The big idea</div>
-        <h1>Two ways to give AI the real answer.</h1>
-        <p class="lede">Say you want your AI to use Google — your listing, your reviews, search results. There are two very different ways it can do that. Press play on each.</p>
-        <div class="versus">
+        <div class="versus" style="margin-top:14px">
           <div class="way scrape">
-            <h3>Way 1 — It screenshots the screen</h3>
-            <p class="sub">"Computer use" — an agent that opens a browser like a person.</p>
-            <div class="mock browser" id="scrapeMock">
-              <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">google.com</span></div>
-              <div class="screen">
-                <div class="skel s1"></div><div class="skel s2"></div><div class="skel s3"></div><div class="skel s2"></div>
-                <div class="shot" id="scrapeShot"></div>
-                <div class="warn" id="scrapeWarn">⚠ Layout changed — button moved, lost. Also saw your other tabs.</div>
-              </div>
-            </div>
-            <button class="demo-btn" style="margin-top:12px" onclick="playScrape(this)">▶ Watch it screenshot</button>
+            <h3>🔧 API</h3>
+            <p class="sub">Built for developers &amp; software.</p>
             <ul class="pros">
-              <li><span class="x">✗</span> Slow — clicks around like a human</li>
-              <li><span class="x">✗</span> Brittle — breaks when the page changes</li>
-              <li><span class="x">✗</span> Sees <i>everything</i> on your screen</li>
+              <li><span class="x">–</span> Every one is different — its own auth, formats, docs</li>
+              <li><span class="x">–</span> Needs custom code for each integration</li>
+              <li><span class="x">–</span> An AI can't just pick it up and use it</li>
+              <li><span class="x">–</span> You read the manual to learn what it does</li>
             </ul>
           </div>
           <div class="way mcp">
-            <h3>Way 2 — It uses a Google <b>MCP</b></h3>
-            <p class="sub">An approved connection straight to Google's data.</p>
-            <div class="mock pipe" id="mcpMock">
-              <div class="pnode" id="pAgent">AI</div>
-              <div class="pwire"><span class="packet" id="pkt1">✓</span></div>
-              <div class="pnode mcpn" id="pMcp">🔌 MCP</div>
-              <div class="pwire"><span class="packet" id="pkt2">✓</span></div>
-              <div class="pnode" id="pData">Google</div>
-            </div>
-            <button class="demo-btn" style="margin-top:12px" onclick="playMcpWay(this)">▶ Watch it use MCP</button>
+            <h3>🔌 MCP</h3>
+            <p class="sub">Built for AI agents.</p>
             <ul class="pros">
-              <li><span class="ok">✓</span> Fast — a direct request, no clicking</li>
-              <li><span class="ok">✓</span> Reliable — doesn't care how the page looks</li>
-              <li><span class="ok">✓</span> Safe — only the actions you allowed</li>
+              <li><span class="ok">✓</span> One standard protocol — same for all of them</li>
+              <li><span class="ok">✓</span> Connect once; no custom glue code</li>
+              <li><span class="ok">✓</span> The AI discovers the tools on its own</li>
+              <li><span class="ok">✓</span> Self-describing — it tells the AI what it can do</li>
             </ul>
           </div>
         </div>
         <div class="takeaway">
-          <b>The difference:</b> screenshotting is the AI <span class="serif">pretending to be a person</span> looking at a screen. An MCP is the AI <span class="serif">asking the tool directly</span> through a permission-controlled doorway. Same goal — but MCP is faster, doesn't break, and can't wander into the rest of your screen. <b>That's why it matters.</b>
+          <b>The key:</b> an MCP usually sits <i>on top of</i> an API — it's not a replacement, it's a <span class="serif">universal adapter</span> that turns existing software into something an AI can use on its own. APIs are like a different power outlet in every country; MCP is the one adapter that fits them all — and it's shaped for AI.
         </div>
-        <div class="nav"><button class="ghost" onclick="go(1)">← Back</button><button onclick="go(3)">Now run a real one →</button></div>
+        <div class="nav"><button class="ghost" onclick="go(0)">← Back</button><button onclick="go(2)">Now see real ones →</button></div>
       </section>
 
-      <!-- STEP 4 — REAL MCPs IN ACTION -->
-      <section class="step" data-step="3" data-icon="🔌" data-accent="#067647">
-        <div class="eyebrow"><span class="num">04 / 06</span> · Real MCPs</div>
+      <!-- STEP 3 — REAL MCPs IN ACTION -->
+      <section class="step" data-step="2" data-icon="⚡" data-accent="#067647">
+        <div class="eyebrow"><span class="num">03 / 05</span> · Real MCPs</div>
         <h1>These exist <span class="serif">today.</span> Watch them work.</h1>
         <p class="lede">Pick a real MCP below. You'll see the exact question, the tool it calls behind the scenes, and the answer your AI gives back.</p>
         <div class="mcp-tabs" id="mcpTabs"></div>
@@ -359,12 +316,12 @@
           <div style="margin-top:14px"><button class="demo-btn" id="mcpRun">▶ Ask it</button></div>
         </div>
         <p style="color:var(--muted); font-size:13.5px; margin-top:14px">💡 Want one wired to <b>your</b> tools? This kit ships with a real, runnable MCP you can build on — see the <code>README</code>.</p>
-        <div class="nav"><button class="ghost" onclick="go(2)">← Back</button><button onclick="go(4)">One thing before you connect anything →</button></div>
+        <div class="nav"><button class="ghost" onclick="go(1)">← Back</button><button onclick="go(3)">One thing before you connect anything →</button></div>
       </section>
 
-      <!-- STEP 5 — 5 QUESTIONS -->
-      <section class="step" data-step="4" data-icon="🛡️" data-accent="#b42318">
-        <div class="eyebrow"><span class="num">05 / 06</span> · Use it safely</div>
+      <!-- STEP 4 — 5 QUESTIONS -->
+      <section class="step" data-step="3" data-icon="🛡️" data-accent="#b42318">
+        <div class="eyebrow"><span class="num">04 / 05</span> · Use it safely</div>
         <h1>5 questions before you connect AI to anything.</h1>
         <p class="lede">Before you wire AI into real tools — email, calendar, payments — ask these. If a vendor can't answer them, slow down.</p>
         <div class="card"><ul class="checklist">
@@ -374,22 +331,22 @@
           <li><b>4. Who can use it?</b> — Just you, your whole team, or your customers?</li>
           <li><b>5. What happens if it's wrong?</b> — Worst case — and can you undo it?</li>
         </ul></div>
-        <div class="nav"><button class="ghost" onclick="go(3)">← Back</button><button onclick="go(5)">Finish →</button></div>
+        <div class="nav"><button class="ghost" onclick="go(2)">← Back</button><button onclick="go(4)">Finish →</button></div>
       </section>
 
-      <!-- STEP 6 — CTA -->
-      <section class="step" data-step="5" data-icon="🎉" data-accent="#1d3a8a">
-        <div class="eyebrow"><span class="num">06 / 06</span> · Done</div>
+      <!-- STEP 5 — CTA -->
+      <section class="step" data-step="4" data-icon="🎉" data-accent="#1d3a8a">
+        <div class="eyebrow"><span class="num">05 / 05</span> · Done</div>
         <h1>You now understand MCPs better than most people online.</h1>
-        <p class="lede">You saw the problem, the difference between screenshotting and a real connection, and you ran an actual MCP on your own info.</p>
+        <p class="lede">You know what an MCP is, how it differs from an API, and you've seen real ones — Chrome, Google, Stripe, Higgsfield — call their actual tools.</p>
         <div class="card soft">
           <p style="margin:0 0 6px;font-size:16px"><b>This kit reads a simple file. The real power is connecting AI to your <span class="serif">actual</span> tools</b> — your calendar, inventory, Google, your CRM — safely. That's what we build, end to end.</p>
           <div class="cta">
-            <a href="https://rabbithole.consulting" target="_blank" rel="noopener">Have Rabbithole connect your real tools →</a>
+            <a href="https://rabbithole.consulting" target="_blank" rel="noopener">See how Rabbithole can help your digital infra →</a>
             <p style="color:var(--muted);font-size:13px;margin-top:14px">Day 1 of 30 free, working AI kits for small business.</p>
           </div>
         </div>
-        <div class="nav"><button class="ghost" onclick="go(3)">← Back to the playground</button><button onclick="go(0)">↻ Start over</button></div>
+        <div class="nav"><button class="ghost" onclick="go(2)">← Back to real MCPs</button><button onclick="go(0)">↻ Start over</button></div>
       </section>
 
       <div class="foot">Built by <a href="https://rabbithole.consulting" target="_blank" rel="noopener">rabbithole.consulting</a> — custom-built infrastructure that runs your business. Runs entirely on your computer · Free under MIT.</div>
@@ -397,7 +354,7 @@
 
     <script>
       const $ = (id) => document.getElementById(id);
-      const TOTAL = 6;
+      const TOTAL = 5;
       let step = 0;
       let diagramTimer = null;
       const pad = (n) => String(n).padStart(2, "0");
@@ -446,8 +403,7 @@
           eyebrow.insertAdjacentHTML("afterbegin", `<span class="step-icon">${icon}</span>`);
         }
 
-        // Progress fill + label + dots
-        $("fill").style.width = ((step + 1) / TOTAL) * 100 + "%";
+        // Progress label + dots
         $("stepLabel").textContent = `${pad(step + 1)} / ${pad(TOTAL)}`;
         document.querySelectorAll("#dots .dot").forEach((d, i) => {
           d.classList.toggle("current", i === step);
@@ -460,56 +416,7 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      function runManual() {
-        const chat = $("manualChat");
-        $("manualBtn").disabled = true;
-        const ai = document.createElement("div");
-        ai.className = "bubble ai";
-        chat.appendChild(ai);
-        const answer = "Saturday hours are 7:00am – 6:00pm.";
-        let i = 0;
-        const t = setInterval(() => {
-          ai.textContent = answer.slice(0, ++i);
-          if (i >= answer.length) {
-            clearInterval(t);
-            const tag = document.createElement("div");
-            tag.className = "tag good";
-            tag.textContent = "✓ Correct — but only because you just pasted it.";
-            ai.appendChild(tag);
-            // Reveal the cost + the MCP contrast
-            $("manualTake").style.display = "block";
-            $("mcpCard").style.display = "block";
-          }
-        }, 26);
-      }
-
-      // Step 3 — scrape mockup: screenshot sweep, then a warning
-      function playScrape(btn) {
-        btn.disabled = true;
-        const shot = $("scrapeShot"), warn = $("scrapeWarn");
-        shot.classList.remove("flash"); warn.classList.remove("show");
-        void shot.offsetWidth; // restart animation
-        shot.classList.add("flash");
-        setTimeout(() => warn.classList.add("show"), 1000);
-        setTimeout(() => { btn.disabled = false; }, 1400);
-      }
-      // Step 3 — MCP mockup: packets travel, nodes light up green
-      function playMcpWay(btn) {
-        btn.disabled = true;
-        const reset = ["pAgent","pMcp","pData"].map($);
-        reset.forEach((n) => n.classList.remove("lit"));
-        const pkt1 = $("pkt1"), pkt2 = $("pkt2");
-        pkt1.classList.remove("go"); pkt2.classList.remove("go");
-        void pkt1.offsetWidth; void pkt2.offsetWidth;
-        $("pAgent").classList.add("lit");
-        pkt1.classList.add("go");
-        setTimeout(() => $("pMcp").classList.add("lit"), 950);
-        setTimeout(() => pkt2.classList.add("go"), 1050);
-        setTimeout(() => $("pData").classList.add("lit"), 2000);
-        setTimeout(() => { btn.disabled = false; }, 2300);
-      }
-
-      // Step 4 — real, recognizable MCPs with their ACTUAL published tools.
+      // Step 3 — real, recognizable MCPs with their ACTUAL published tools.
       // Tool lists verified from each project's docs (Chrome DevTools MCP,
       // Stripe Agent Toolkit, Google Workspace MCP, Higgsfield MCP).
       const MCPS = [
