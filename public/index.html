@@ -3,269 +3,629 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>🐇 MCP Starter Kit — Playground</title>
+    <title>What is an MCP? — Rabbithole MCP Starter Kit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,wght@1,400;1,500&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #0f1115;
-        --panel: #171a21;
-        --panel-2: #1e222b;
-        --line: #2a2f3a;
-        --text: #e7e9ee;
-        --muted: #9aa3b2;
-        --accent: #7c5cff;
-        --accent-2: #00d49f;
+        --bg: #ffffff;
+        --bg-soft: #f5f6f8;
+        --bg-soft-2: #f4f4f6;
+        --line: #eaecf0;
+        --line-2: #e3e6eb;
+        --navy: #0a0e1c;
+        --navy-2: #142253;
+        --blue: #1d3a8a;
+        --blue-soft: #dee3f3;
+        --text: #1a1a1a;
+        --muted: #6b7280;
+        --muted-2: #5a5f66;
+        --warn: #b42318;
+        --ok: #1d3a8a;
         --radius: 14px;
       }
       * { box-sizing: border-box; }
+      html, body { margin: 0; }
       body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: radial-gradient(1200px 600px at 80% -10%, #1b1640, var(--bg));
+        font-family: 'Inter', system-ui, sans-serif;
+        background: var(--bg);
         color: var(--text);
-        line-height: 1.5;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
       }
-      header {
-        padding: 28px 24px 8px;
-        max-width: 1100px;
-        margin: 0 auto;
-      }
-      header h1 { margin: 0; font-size: 22px; }
-      header p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
-      .badge {
-        display: inline-block; font-size: 12px; color: var(--accent-2);
-        border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px;
-        margin-bottom: 10px;
-      }
-      main {
-        max-width: 1100px; margin: 0 auto; padding: 16px 24px 60px;
-        display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-      }
-      @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
-      .panel {
-        background: var(--panel); border: 1px solid var(--line);
-        border-radius: var(--radius); padding: 20px;
-      }
-      .panel h2 { margin: 0 0 4px; font-size: 16px; }
-      .panel .hint { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
-      label { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 4px; }
-      input, textarea, select {
-        width: 100%; background: var(--panel-2); border: 1px solid var(--line);
-        color: var(--text); border-radius: 10px; padding: 10px 12px; font-size: 14px;
-        font-family: inherit;
-      }
-      input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+      .shell { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+      h1, h2, h3 { font-family: 'Inter Tight', sans-serif; letter-spacing: -0.02em; }
+
+      /* Progress rail */
+      .progress { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); padding: 18px 0 12px; border-bottom: 1px solid var(--line); }
+      .progress .inner { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+      .progress .bar { height: 4px; background: var(--bg-soft); border-radius: 99px; overflow: hidden; }
+      .progress .fill { height: 100%; width: 0%; background: var(--navy-2); transition: width .4s ease; }
+      .progress .meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin-top: 9px; }
+      .brand { font-family: 'Inter Tight', sans-serif; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+      .brand a { color: inherit; text-decoration: none; }
+
+      /* Steps */
+      .step { display: none; animation: fade .4s ease; padding: 32px 0 48px; }
+      .step.active { display: block; }
+      @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+      .eyebrow { font-family: 'Inter Tight', sans-serif; font-size: 13px; font-weight: 700; color: var(--blue); letter-spacing: .04em; text-transform: uppercase; }
+      .eyebrow .num { color: var(--muted); font-variant-numeric: tabular-nums; }
+      h1 { font-size: 34px; font-weight: 800; margin: 10px 0 8px; line-height: 1.12; color: var(--navy); }
+      h2 { font-size: 19px; font-weight: 700; margin: 4px 0; color: var(--navy); }
+      .lede { color: var(--muted-2); font-size: 17px; margin: 0 0 24px; max-width: 60ch; }
+      .serif { font-family: 'Newsreader', Georgia, serif; font-style: italic; }
+
+      .card { background: var(--bg); border: 1px solid var(--line-2); border-radius: var(--radius); padding: 22px; }
+      .card.soft { background: var(--bg-soft); border-color: var(--line); }
+      .card + .card { margin-top: 14px; }
+
+      /* Buttons */
+      .nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; }
+      button { cursor: pointer; border: none; border-radius: 10px; padding: 12px 22px; font-size: 15px; font-weight: 600; font-family: 'Inter Tight', sans-serif; color: #fff; background: var(--navy-2); transition: background .15s; }
+      button:hover { background: var(--blue); }
+      button.ghost { background: #fff; border: 1px solid var(--line-2); color: var(--text); }
+      button.ghost:hover { background: var(--bg-soft); border-color: #d0d4da; }
+      button:disabled { opacity: .45; cursor: default; }
+      .demo-btn { background: #fff; border: 1px solid var(--line-2); color: var(--navy); }
+      .demo-btn:hover { background: var(--bg-soft); border-color: var(--blue); }
+
+      ul.ticks { list-style: none; padding: 0; margin: 0; font-size: 16px; }
+      ul.ticks li { padding: 6px 0; }
+
+      /* Chat bubbles */
+      .chat { display: flex; flex-direction: column; gap: 10px; }
+      .bubble { max-width: 82%; padding: 11px 15px; border-radius: 14px; font-size: 15px; }
+      .bubble.user { align-self: flex-end; background: var(--navy-2); color: #fff; border-bottom-right-radius: 4px; }
+      .bubble.ai { align-self: flex-start; background: var(--bg-soft); border: 1px solid var(--line-2); border-bottom-left-radius: 4px; }
+      .bubble.bad { border-color: #f3c2bd; background: #fdf3f2; }
+      .tag { display: block; font-size: 12px; font-weight: 700; margin-top: 9px; }
+      .tag.bad { color: var(--warn); }
+      .tag.good { color: var(--blue); }
+
+      /* Step 1 — MCP concept diagram */
+      .mcp-diagram { display: flex; align-items: stretch; gap: 8px; margin-top: 6px; }
+      .mcp-diagram .node { flex: 1; background: #fff; border: 1px solid var(--line-2); border-radius: 12px; padding: 14px 12px; text-align: center; }
+      .mcp-diagram .node.server { border-top: 3px solid var(--navy-2); }
+      .node-title { font-family: 'Inter Tight', sans-serif; font-weight: 700; color: var(--navy); font-size: 14.5px; }
+      .node-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+      .tool-chips { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 9px; }
+      .tool-chips span { font-family: ui-monospace, Menlo, monospace; font-size: 10px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; color: var(--muted-2); }
+      .arrow { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--muted); font-size: 10.5px; min-width: 52px; text-align: center; }
+      .arrow .a { font-size: 22px; color: var(--blue); line-height: 1; }
+      @media (max-width: 680px) { .mcp-diagram { flex-direction: column; } .arrow .a { transform: rotate(90deg); } }
+      .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+      .facts span { font-size: 13px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 99px; padding: 6px 13px; color: var(--muted-2); }
+      .facts b { color: var(--navy); font-weight: 600; }
+
+      /* Step 2 — manual paste demo */
+      .bubble.paste { background: var(--bg-soft); color: var(--muted-2); border: 1px dashed #d0d4da; font-size: 13px; max-width: 100%; }
+      .paste-label { display: block; font-weight: 700; color: var(--muted); font-size: 10.5px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .05em; }
+
+      /* Step 4 — real MCP tabs */
+      .mcp-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+      .mcp-tab { cursor: pointer; display: flex; align-items: center; gap: 7px; background: #fff; border: 1px solid var(--line-2); border-radius: 10px; padding: 9px 14px; font-size: 14px; font-weight: 600; font-family: 'Inter Tight', sans-serif; color: var(--navy); }
+      .mcp-tab:hover { border-color: var(--blue); }
+      .mcp-tab.active { background: var(--navy-2); color: #fff; border-color: var(--navy-2); }
+      .mcp-tab .dot { font-size: 16px; }
+      .mcp-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+      .mcp-count { font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 700; color: var(--blue); background: var(--blue-soft); border-radius: 99px; padding: 5px 12px; white-space: nowrap; }
+      .bubble.tool { align-self: flex-start; max-width: 100%; background: var(--navy); color: #cdd6f4; border: 1px solid var(--navy); font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; white-space: pre-wrap; }
+      .bubble.tool .tlabel { display: block; color: #7c89b8; font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
+      /* live endpoints grid */
+      .ep-wrap { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+      .ep-label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700; margin-bottom: 9px; }
+      .endpoints-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+      .ep { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 7px; padding: 4px 9px; color: var(--muted-2); transition: all .25s ease; }
+      .ep.called { background: var(--navy-2); color: #fff; border-color: var(--navy-2); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(20,34,83,0.25); }
+
+      /* Two-way comparison */
+      .versus { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 740px) { .versus { grid-template-columns: 1fr; } }
+      .way { border: 1px solid var(--line-2); border-radius: var(--radius); padding: 18px; background: #fff; }
+      .way.scrape { border-top: 3px solid #d0d4da; }
+      .way.mcp { border-top: 3px solid var(--navy-2); }
+      .way h3 { margin: 0 0 4px; font-size: 17px; color: var(--navy); }
+      .way .sub { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
+      .flow { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px; padding: 12px; min-height: 138px; white-space: pre-wrap; color: var(--muted-2); }
+      .flow .line { opacity: 0; }
+      .flow .line.show { opacity: 1; transition: opacity .3s; }
+      .flow .red { color: var(--warn); }
+      .flow .green { color: var(--blue); font-weight: 600; }
+      ul.pros { list-style: none; padding: 0; margin: 14px 0 0; font-size: 13.5px; }
+      ul.pros li { padding: 3px 0; color: var(--muted-2); }
+      .x { color: var(--warn); font-weight: 700; } .ok { color: var(--blue); font-weight: 700; }
+      .takeaway { margin-top: 16px; background: var(--bg-soft); border: 1px solid var(--line); border-left: 3px solid var(--navy-2); border-radius: 10px; padding: 16px 18px; font-size: 15.5px; }
+
+      /* Live tools */
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 740px) { .grid2 { grid-template-columns: 1fr; } }
+      label { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 4px; font-weight: 500; }
+      input, textarea { width: 100%; background: #fff; border: 1px solid var(--line-2); color: var(--text); border-radius: 9px; padding: 10px 12px; font-size: 14px; font-family: inherit; }
+      input:focus, textarea:focus { outline: 2px solid var(--blue); border-color: transparent; }
       .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-      button {
-        cursor: pointer; border: none; border-radius: 10px; padding: 10px 16px;
-        font-size: 14px; font-weight: 600; color: #fff;
-        background: linear-gradient(135deg, var(--accent), #5b3cff);
-      }
-      button.secondary { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); }
-      button:active { transform: translateY(1px); }
-      .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-      .pill {
-        display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
-        background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
-        border-radius: 999px; padding: 8px 14px; font-size: 13px;
-      }
-      .pill:hover { border-color: var(--accent); }
-      .out {
-        margin-top: 16px; background: #0c0e13; border: 1px solid var(--line);
-        border-radius: 10px; padding: 14px; min-height: 80px; white-space: pre-wrap;
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px;
-        color: var(--accent-2);
-      }
-      .saved { color: var(--accent-2); font-size: 13px; height: 18px; margin-top: 8px; }
-      .group { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 6px; }
-      footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 24px 40px; }
-      footer a { color: var(--accent); }
-      code { background: var(--panel-2); padding: 1px 6px; border-radius: 6px; font-size: 12px; }
+      .pills { display: flex; gap: 9px; flex-wrap: wrap; margin: 10px 0; }
+      .pill { cursor: pointer; background: #fff; border: 1px solid var(--line-2); color: var(--navy); border-radius: 99px; padding: 8px 14px; font-size: 13px; }
+      .pill:hover { border-color: var(--blue); background: var(--bg-soft); }
+      .out { margin-top: 14px; background: var(--navy); border: 1px solid var(--navy); border-radius: 10px; padding: 14px; min-height: 70px; white-space: pre-wrap; font-family: ui-monospace, Menlo, monospace; font-size: 13px; color: #e3e6eb; }
+      .saved { color: var(--blue); font-size: 13px; height: 18px; margin-top: 8px; font-weight: 600; }
+      .group { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 4px; }
+
+      .checklist { list-style: none; padding: 0; margin: 0; }
+      .checklist li { padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--muted-2); }
+      .checklist li:last-child { border: none; }
+      .checklist b { color: var(--navy); }
+      .cta { text-align: center; padding: 6px 0 0; }
+      .cta a { color: #fff; text-decoration: none; display: inline-block; background: var(--navy-2); padding: 14px 28px; border-radius: 11px; font-weight: 700; font-family: 'Inter Tight', sans-serif; margin-top: 10px; }
+      .cta a:hover { background: var(--blue); }
+      .foot { text-align: center; color: var(--muted); font-size: 13px; padding: 22px 0 50px; border-top: 1px solid var(--line); }
+      .foot a { color: var(--navy-2); font-weight: 600; text-decoration: none; }
+      code { background: var(--bg-soft); padding: 1px 6px; border-radius: 6px; font-size: 12.5px; }
+
+      /* Per-step accent (set by JS) */
+      .progress .fill { background: var(--step-accent, var(--navy-2)); }
+      .eyebrow { color: var(--step-accent, var(--blue)); }
+      .step-icon { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 9px; font-size: 16px; margin-right: 9px; background: color-mix(in srgb, var(--step-accent) 14%, #fff); border: 1px solid color-mix(in srgb, var(--step-accent) 30%, #fff); vertical-align: middle; }
+
+      /* Progress dots */
+      .dots { display: flex; gap: 7px; margin-top: 10px; }
+      .dots .dot { flex: 1; height: 6px; border-radius: 99px; background: var(--bg-soft); cursor: pointer; transition: background .3s; }
+      .dots .dot.done { background: color-mix(in srgb, var(--step-accent) 45%, #fff); }
+      .dots .dot.current { background: var(--step-accent, var(--navy-2)); }
+
+      /* Smoother step slide */
+      .step { animation: slideIn .45s cubic-bezier(.2,.7,.2,1); }
+      @keyframes slideIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+      /* Step 1 — animated diagram */
+      .mcp-diagram .node.lit { border-color: var(--blue); box-shadow: 0 6px 18px rgba(29,58,138,0.18); transform: translateY(-2px); }
+      .mcp-diagram .node { transition: all .35s ease; }
+      .arrow .a { transition: transform .3s, color .3s; }
+      .arrow.lit .a { color: var(--navy-2); transform: scale(1.35); }
+      @media (max-width: 680px) { .arrow.lit .a { transform: rotate(90deg) scale(1.35); } }
+
+      /* Step 3 — visual mockups */
+      .mock { border-radius: 11px; overflow: hidden; margin-top: 4px; height: 150px; position: relative; }
+      .mock.browser { border: 1px solid var(--line-2); background: #fff; }
+      .mock .bar { display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+      .mock .bar .d { width: 9px; height: 9px; border-radius: 99px; background: #d0d4da; }
+      .mock .bar .url { margin-left: 8px; font-size: 11px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 2px 10px; }
+      .mock .screen { position: relative; height: calc(100% - 32px); padding: 12px; }
+      .mock .skel { height: 9px; border-radius: 5px; background: var(--bg-soft-2); margin-bottom: 8px; }
+      .mock .skel.s1 { width: 70%; } .mock .skel.s2 { width: 90%; } .mock .skel.s3 { width: 55%; }
+      .mock .shot { position: absolute; inset: 0; background: linear-gradient(120deg, transparent 40%, rgba(29,58,138,0.18) 50%, transparent 60%); transform: translateX(-100%); }
+      .mock .shot.flash { animation: sweep 1s ease forwards; }
+      @keyframes sweep { to { transform: translateX(100%); } }
+      .mock .warn { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 11.5px; color: var(--warn); background: #fdf3f2; border: 1px solid #f3c2bd; border-radius: 7px; padding: 6px 9px; opacity: 0; transform: translateY(6px); transition: all .3s; }
+      .mock .warn.show { opacity: 1; transform: none; }
+
+      .mock.pipe { border: 1px solid var(--line-2); background: var(--bg-soft); display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 0 14px; }
+      .pnode { background: #fff; border: 1px solid var(--line-2); border-radius: 9px; padding: 10px 12px; font-size: 13px; font-weight: 600; font-family: 'Inter Tight', sans-serif; color: var(--navy); text-align: center; transition: all .3s; }
+      .pnode.lit { border-color: var(--blue); background: var(--blue-soft); }
+      .pwire { flex: 1; height: 2px; background: var(--line-2); position: relative; }
+      .pwire .packet { position: absolute; top: -9px; left: 0; width: 20px; height: 20px; border-radius: 99px; background: var(--navy-2); color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; opacity: 0; }
+      .pwire .packet.go { animation: travel 1s ease forwards; }
+      @keyframes travel { 0% { left: 0; opacity: 1; } 100% { left: calc(100% - 20px); opacity: 1; } }
     </style>
   </head>
   <body>
-    <header>
-      <div class="badge">🐇 Rabbithole · MCP Starter Kit</div>
-      <h1>Your AI, using your real business data.</h1>
-      <p>
-        Edit your info on the left. Try the tools on the right and see the
-        exact answers your AI will give. No coding. Nothing leaves your computer.
-      </p>
-    </header>
-
-    <main>
-      <!-- LEFT: edit business info -->
-      <section class="panel">
-        <h2>1 · Your business info</h2>
-        <p class="hint">This is what your AI will know. Edit it, then Save.</p>
-
-        <label>Business name</label>
-        <input id="name" />
-
-        <label>Tagline</label>
-        <input id="tagline" />
-
-        <div class="row">
-          <div><label>Phone</label><input id="phone" /></div>
-          <div><label>Email</label><input id="email" /></div>
+    <!-- PROGRESS -->
+    <div class="progress">
+      <div class="inner">
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <div class="dots" id="dots"></div>
+        <div class="meta">
+          <span class="brand"><a href="https://rabbithole.consulting" target="_blank" rel="noopener">Rabbithole</a> · MCP Starter Kit</span>
+          <span id="stepLabel">01 / 06</span>
         </div>
+      </div>
+    </div>
 
-        <label>Address</label>
-        <input id="address" />
-
-        <label>Services &amp; prices <span class="hint">(name | price | unit, one per line)</span></label>
-        <textarea id="services" rows="4" placeholder="Latte | 4.50 | cup"></textarea>
-
-        <label>FAQs <span class="hint">(question | answer, one per line)</span></label>
-        <textarea id="faqs" rows="4" placeholder="Do you have wifi? | Yes, free for customers."></textarea>
-
-        <label>Open booking slots <span class="hint">(one per line)</span></label>
-        <textarea id="slots" rows="3" placeholder="Tomorrow 9:00am"></textarea>
-
-        <div class="toolbar">
-          <button id="save">💾 Save my info</button>
-          <button class="secondary" id="reload">Reload</button>
-        </div>
-        <div class="saved" id="savedMsg"></div>
-      </section>
-
-      <!-- RIGHT: try the tools -->
-      <section class="panel">
-        <h2>2 · Try it like a customer</h2>
-        <p class="hint">Click a question. This calls the real tool and shows the answer.</p>
-
-        <div class="toolbar">
-          <span class="pill" data-tool="get_business_info">📋 What are your hours?</span>
-          <span class="pill" data-tool="check_availability">📅 What times are open?</span>
-        </div>
-
-        <div class="group">
-          <label>💬 Ask an FAQ</label>
-          <div class="row">
-            <input id="faqQ" placeholder="Do you have wifi?" />
-            <button class="secondary" id="askFaq">Ask</button>
+    <div class="shell">
+      <!-- STEP 1 — WELCOME -->
+      <section class="step active" data-step="0" data-icon="🐇" data-accent="#1d3a8a">
+        <div class="eyebrow">Learn by clicking · ~2 minutes</div>
+        <h1>What is an "MCP" — and why does everyone keep saying it?</h1>
+        <p class="lede"><b>MCP</b> (Model Context Protocol) is a small, standard way to give an AI a set of <b>tools</b> it can use — so it can pull real data and take real actions instead of just talking. Here's the whole idea in one picture:</p>
+        <div class="card">
+          <div class="mcp-diagram" id="mcpDiagram">
+            <div class="node">
+              <div class="node-title">Any AI agent</div>
+              <div class="node-sub">Claude, ChatGPT, Cursor, your own bot…</div>
+            </div>
+            <div class="arrow"><span class="a">→</span><span>speaks<br /><b>MCP</b></span></div>
+            <div class="node server">
+              <div class="node-title">MCP Server</div>
+              <div class="node-sub">a set of <b>tools</b>, served over HTTP</div>
+              <div class="tool-chips"><span>search()</span><span>read()</span><span>create()</span></div>
+            </div>
+            <div class="arrow"><span class="a">→</span><span>calls</span></div>
+            <div class="node">
+              <div class="node-title">Your data &amp; apps</div>
+              <div class="node-sub">calendar, prices, CRM, Google…</div>
+            </div>
+          </div>
+          <div class="facts">
+            <span>🔓 <b>Open standard</b>, created by Anthropic</span>
+            <span>🤖 <b>AI-agnostic</b> — built for any AI to use</span>
+            <span>🌐 Tools <b>served over HTTP</b></span>
+            <span>🔌 One connection, <b>reusable</b> everywhere</span>
           </div>
         </div>
-
-        <div class="group">
-          <label>💲 Get a price quote</label>
-          <div class="row">
-            <input id="qService" placeholder="Latte" />
-            <input id="qQty" type="number" min="1" value="1" />
-          </div>
-          <div class="toolbar"><button class="secondary" id="quote">Calculate</button></div>
-        </div>
-
-        <div class="out" id="output">👋 Pick a question above to see your AI's answer.</div>
+        <p class="lede" style="margin-top:18px">Before MCP, hooking an AI up to every different app's API was custom, messy work. MCP is the <span class="serif">common plug</span> — write your tools once, and <i>any</i> AI can use them. You'll run a real one on your own business in a minute.</p>
+        <div class="nav"><span></span><button onclick="go(1)">Start →</button></div>
       </section>
-    </main>
 
-    <footer>
-      Built by <strong>Rabbithole</strong> — Day 1 of 30 free AI kits for small business.
-      When this works, connect it to your AI app — see the <code>README</code>.
-    </footer>
+      <!-- STEP 2 — THE PROBLEM -->
+      <section class="step" data-step="1" data-icon="🧩" data-accent="#b54708">
+        <div class="eyebrow"><span class="num">02 / 06</span> · The problem</div>
+        <h1>"Can't I just <span class="serif">tell</span> the AI?"</h1>
+        <p class="lede">You can. Paste your info into a chat and it answers fine. So why bother with an MCP? Watch what "just telling it" actually costs.</p>
+        <div class="card">
+          <div class="chat" id="manualChat">
+            <div class="bubble user paste">
+              <span class="paste-label">📋 Pasted by you — at the start of every new chat</span>
+              Maple Street Coffee. Hours: Mon–Fri 6:30am–4pm, Fri til 6pm, Sat 7am–6pm, Sun closed. Latte $4.50, Drip $3, Catering box (12) $36, Pastry platter $28. Free wifi. Dog-friendly patio. Oat/almond milk free…
+            </div>
+            <div class="bubble user">What are your Saturday hours?</div>
+          </div>
+          <div style="margin-top:14px"><button class="demo-btn" id="manualBtn" onclick="runManual()">▶ See what happens</button></div>
+        </div>
+        <div class="takeaway" id="manualTake" style="display:none">
+          <b>It answered right — but only because <span class="serif">you</span> fed it everything, by hand, this one time.</b> Tomorrow's chat? Paste it all again. Raised your prices? It won't know. Your new hire's AI, or a customer's? They have none of it.
+        </div>
+        <div class="card" id="mcpCard" style="display:none; border-top: 3px solid var(--navy-2); margin-top:14px">
+          <h2 style="font-size:17px; margin-bottom:8px">Now attach your <b>MCP</b> instead</h2>
+          <ul class="ticks" style="font-size:15px">
+            <li><span class="ok">✓</span> Connect <b>once</b> — any agent reads it, no pasting</li>
+            <li><span class="ok">✓</span> Always <b>current</b> — it reads your live data every time</li>
+            <li><span class="ok">✓</span> Knows <b>everything</b> — hours, prices, availability, and more</li>
+            <li><span class="ok">✓</span> Works for <b>anyone's</b> agent — staff, customers, partners</li>
+          </ul>
+          <p style="margin:12px 0 0; font-size:15px">That's the shift: an MCP isn't a one-time answer you type — it's a <span class="serif">live, reusable connection</span> to everything about your business that any AI can plug into.</p>
+        </div>
+        <div class="nav"><button class="ghost" onclick="go(0)">← Back</button><button onclick="go(2)">See how it connects →</button></div>
+      </section>
+
+      <!-- STEP 3 — THE BIG IDEA -->
+      <section class="step" data-step="2" data-icon="⚡" data-accent="#6941c6">
+        <div class="eyebrow"><span class="num">03 / 06</span> · The big idea</div>
+        <h1>Two ways to give AI the real answer.</h1>
+        <p class="lede">Say you want your AI to use Google — your listing, your reviews, search results. There are two very different ways it can do that. Press play on each.</p>
+        <div class="versus">
+          <div class="way scrape">
+            <h3>Way 1 — It screenshots the screen</h3>
+            <p class="sub">"Computer use" — an agent that opens a browser like a person.</p>
+            <div class="mock browser" id="scrapeMock">
+              <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">google.com</span></div>
+              <div class="screen">
+                <div class="skel s1"></div><div class="skel s2"></div><div class="skel s3"></div><div class="skel s2"></div>
+                <div class="shot" id="scrapeShot"></div>
+                <div class="warn" id="scrapeWarn">⚠ Layout changed — button moved, lost. Also saw your other tabs.</div>
+              </div>
+            </div>
+            <button class="demo-btn" style="margin-top:12px" onclick="playScrape(this)">▶ Watch it screenshot</button>
+            <ul class="pros">
+              <li><span class="x">✗</span> Slow — clicks around like a human</li>
+              <li><span class="x">✗</span> Brittle — breaks when the page changes</li>
+              <li><span class="x">✗</span> Sees <i>everything</i> on your screen</li>
+            </ul>
+          </div>
+          <div class="way mcp">
+            <h3>Way 2 — It uses a Google <b>MCP</b></h3>
+            <p class="sub">An approved connection straight to Google's data.</p>
+            <div class="mock pipe" id="mcpMock">
+              <div class="pnode" id="pAgent">AI</div>
+              <div class="pwire"><span class="packet" id="pkt1">✓</span></div>
+              <div class="pnode mcpn" id="pMcp">🔌 MCP</div>
+              <div class="pwire"><span class="packet" id="pkt2">✓</span></div>
+              <div class="pnode" id="pData">Google</div>
+            </div>
+            <button class="demo-btn" style="margin-top:12px" onclick="playMcpWay(this)">▶ Watch it use MCP</button>
+            <ul class="pros">
+              <li><span class="ok">✓</span> Fast — a direct request, no clicking</li>
+              <li><span class="ok">✓</span> Reliable — doesn't care how the page looks</li>
+              <li><span class="ok">✓</span> Safe — only the actions you allowed</li>
+            </ul>
+          </div>
+        </div>
+        <div class="takeaway">
+          <b>The difference:</b> screenshotting is the AI <span class="serif">pretending to be a person</span> looking at a screen. An MCP is the AI <span class="serif">asking the tool directly</span> through a permission-controlled doorway. Same goal — but MCP is faster, doesn't break, and can't wander into the rest of your screen. <b>That's why it matters.</b>
+        </div>
+        <div class="nav"><button class="ghost" onclick="go(1)">← Back</button><button onclick="go(3)">Now run a real one →</button></div>
+      </section>
+
+      <!-- STEP 4 — REAL MCPs IN ACTION -->
+      <section class="step" data-step="3" data-icon="🔌" data-accent="#067647">
+        <div class="eyebrow"><span class="num">04 / 06</span> · Real MCPs</div>
+        <h1>These exist <span class="serif">today.</span> Watch them work.</h1>
+        <p class="lede">Pick a real MCP below. You'll see the exact question, the tool it calls behind the scenes, and the answer your AI gives back.</p>
+        <div class="mcp-tabs" id="mcpTabs"></div>
+        <div class="card" id="mcpPanel">
+          <div class="mcp-head">
+            <div>
+              <h2 id="mcpName" style="font-size:18px"></h2>
+              <p id="mcpConnects" style="color:var(--muted); font-size:13px; margin:2px 0 0"></p>
+            </div>
+            <span class="mcp-count" id="mcpCount"></span>
+          </div>
+          <div class="ep-wrap">
+            <div class="ep-label">⚙ Real tools inside this MCP <span style="color:var(--blue)">— the highlighted ones fire below</span></div>
+            <div class="endpoints-grid" id="mcpEndpoints"></div>
+          </div>
+          <div class="chat" id="mcpChat" style="margin-top:16px"></div>
+          <div style="margin-top:14px"><button class="demo-btn" id="mcpRun">▶ Ask it</button></div>
+        </div>
+        <p style="color:var(--muted); font-size:13.5px; margin-top:14px">💡 Want one wired to <b>your</b> tools? This kit ships with a real, runnable MCP you can build on — see the <code>README</code>.</p>
+        <div class="nav"><button class="ghost" onclick="go(2)">← Back</button><button onclick="go(4)">One thing before you connect anything →</button></div>
+      </section>
+
+      <!-- STEP 5 — 5 QUESTIONS -->
+      <section class="step" data-step="4" data-icon="🛡️" data-accent="#b42318">
+        <div class="eyebrow"><span class="num">05 / 06</span> · Use it safely</div>
+        <h1>5 questions before you connect AI to anything.</h1>
+        <p class="lede">Before you wire AI into real tools — email, calendar, payments — ask these. If a vendor can't answer them, slow down.</p>
+        <div class="card"><ul class="checklist">
+          <li><b>1. What can it actually <i>do?</i></b> — Read-only, or can it change/delete things? <span style="color:var(--blue)">(This kit is read-only on purpose.)</span></li>
+          <li><b>2. What data does it touch?</b> — And is any of it sensitive?</li>
+          <li><b>3. Where does that data go?</b> — Stays on your machine, or sent to a company?</li>
+          <li><b>4. Who can use it?</b> — Just you, your whole team, or your customers?</li>
+          <li><b>5. What happens if it's wrong?</b> — Worst case — and can you undo it?</li>
+        </ul></div>
+        <div class="nav"><button class="ghost" onclick="go(3)">← Back</button><button onclick="go(5)">Finish →</button></div>
+      </section>
+
+      <!-- STEP 6 — CTA -->
+      <section class="step" data-step="5" data-icon="🎉" data-accent="#1d3a8a">
+        <div class="eyebrow"><span class="num">06 / 06</span> · Done</div>
+        <h1>You now understand MCPs better than most people online.</h1>
+        <p class="lede">You saw the problem, the difference between screenshotting and a real connection, and you ran an actual MCP on your own info.</p>
+        <div class="card soft">
+          <p style="margin:0 0 6px;font-size:16px"><b>This kit reads a simple file. The real power is connecting AI to your <span class="serif">actual</span> tools</b> — your calendar, inventory, Google, your CRM — safely. That's what we build, end to end.</p>
+          <div class="cta">
+            <a href="https://rabbithole.consulting" target="_blank" rel="noopener">Have Rabbithole connect your real tools →</a>
+            <p style="color:var(--muted);font-size:13px;margin-top:14px">Day 1 of 30 free, working AI kits for small business.</p>
+          </div>
+        </div>
+        <div class="nav"><button class="ghost" onclick="go(3)">← Back to the playground</button><button onclick="go(0)">↻ Start over</button></div>
+      </section>
+
+      <div class="foot">Built by <a href="https://rabbithole.consulting" target="_blank" rel="noopener">rabbithole.consulting</a> — custom-built infrastructure that runs your business. Runs entirely on your computer · Free under MIT.</div>
+    </div>
 
     <script>
       const $ = (id) => document.getElementById(id);
-      const out = $("output");
+      const TOTAL = 6;
+      let step = 0;
+      let diagramTimer = null;
+      const pad = (n) => String(n).padStart(2, "0");
+      const sections = () => Array.from(document.querySelectorAll(".step"));
 
-      function show(text, isError) {
-        out.textContent = text;
-        out.style.color = isError ? "#ff6b6b" : "var(--accent-2)";
+      // Build clickable progress dots once
+      function buildDots() {
+        $("dots").innerHTML = Array.from({ length: TOTAL }, (_, i) =>
+          `<div class="dot" data-i="${i}" title="Step ${i + 1}"></div>`
+        ).join("");
+        document.querySelectorAll("#dots .dot").forEach((d) =>
+          d.addEventListener("click", () => go(Number(d.dataset.i)))
+        );
       }
 
-      // --- Load business.json into the form ---
-      async function load() {
-        const b = await (await fetch("/api/business")).json();
-        $("name").value = b.name || "";
-        $("tagline").value = b.tagline || "";
-        $("phone").value = b.phone || "";
-        $("email").value = b.email || "";
-        $("address").value = b.address || "";
-        $("services").value = (b.services || [])
-          .map((s) => `${s.name} | ${s.price} | ${s.unit}`)
-          .join("\n");
-        $("faqs").value = (b.faqs || []).map((f) => `${f.q} | ${f.a}`).join("\n");
-        $("slots").value = (b.appointment_slots || []).join("\n");
-      }
-
-      function parseLines(text, fn) {
-        return text
-          .split("\n")
-          .map((l) => l.trim())
-          .filter(Boolean)
-          .map(fn)
-          .filter(Boolean);
-      }
-
-      // --- Save the form back to business.json ---
-      async function save() {
-        const body = {
-          name: $("name").value.trim(),
-          tagline: $("tagline").value.trim(),
-          phone: $("phone").value.trim(),
-          email: $("email").value.trim(),
-          address: $("address").value.trim(),
-          hours: {}, // hours kept in business.json; edit there for full control
-          services: parseLines($("services").value, (l) => {
-            const [name, price, unit] = l.split("|").map((x) => x.trim());
-            if (!name) return null;
-            return { name, price: Number(price) || 0, unit: unit || "each" };
-          }),
-          faqs: parseLines($("faqs").value, (l) => {
-            const [q, ...a] = l.split("|");
-            if (!q?.trim()) return null;
-            return { q: q.trim(), a: a.join("|").trim() };
-          }),
-          appointment_slots: parseLines($("slots").value, (l) => l),
+      // Step 1 — loop a highlight through the diagram boxes
+      function startDiagram() {
+        stopDiagram();
+        const els = Array.from(document.querySelectorAll("#mcpDiagram > *"));
+        if (!els.length) return;
+        let i = 0;
+        const tick = () => {
+          els.forEach((e) => e.classList.remove("lit"));
+          els[i].classList.add("lit");
+          i = (i + 1) % els.length;
         };
-        // Preserve hours that already exist
-        const existing = await (await fetch("/api/business")).json();
-        body.hours = existing.hours || {};
+        tick();
+        diagramTimer = setInterval(tick, 650);
+      }
+      function stopDiagram() {
+        if (diagramTimer) { clearInterval(diagramTimer); diagramTimer = null; }
+        document.querySelectorAll("#mcpDiagram > *").forEach((e) => e.classList.remove("lit"));
+      }
 
-        const res = await fetch("/api/business", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
-        const data = await res.json();
-        const msg = $("savedMsg");
-        if (data.ok) {
-          msg.textContent = "✅ Saved! Try a question on the right →";
-          setTimeout(() => (msg.textContent = ""), 4000);
-        } else {
-          msg.textContent = "⚠️ " + (data.error || "Could not save");
+      function go(n) {
+        step = Math.max(0, Math.min(TOTAL - 1, n));
+        const sec = sections().find((s) => Number(s.dataset.step) === step);
+        sections().forEach((s) => s.classList.toggle("active", s === sec));
+
+        // Per-step accent + icon
+        const accent = sec.dataset.accent || "#142253";
+        const icon = sec.dataset.icon || "•";
+        document.body.style.setProperty("--step-accent", accent);
+        const eyebrow = sec.querySelector(".eyebrow");
+        if (eyebrow && !eyebrow.querySelector(".step-icon")) {
+          eyebrow.insertAdjacentHTML("afterbegin", `<span class="step-icon">${icon}</span>`);
         }
-      }
 
-      // --- Call a tool and show the answer ---
-      async function callTool(name, args = {}) {
-        show("…thinking");
-        const res = await fetch("/api/tool/" + name, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(args),
+        // Progress fill + label + dots
+        $("fill").style.width = ((step + 1) / TOTAL) * 100 + "%";
+        $("stepLabel").textContent = `${pad(step + 1)} / ${pad(TOTAL)}`;
+        document.querySelectorAll("#dots .dot").forEach((d, i) => {
+          d.classList.toggle("current", i === step);
+          d.classList.toggle("done", i < step);
         });
-        const data = await res.json();
-        if (data.ok) show(data.result);
-        else show(data.error || "Something went wrong", true);
+
+        // Animate the Step 1 diagram only while it's on screen
+        step === 0 ? startDiagram() : stopDiagram();
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      document.querySelectorAll(".pill").forEach((p) =>
-        p.addEventListener("click", () => callTool(p.dataset.tool))
-      );
-      $("askFaq").addEventListener("click", () =>
-        callTool("lookup_faq", { question: $("faqQ").value })
-      );
-      $("quote").addEventListener("click", () =>
-        callTool("price_quote", {
-          service: $("qService").value,
-          quantity: Number($("qQty").value) || 1,
-        })
-      );
-      $("save").addEventListener("click", save);
-      $("reload").addEventListener("click", load);
+      function runManual() {
+        const chat = $("manualChat");
+        $("manualBtn").disabled = true;
+        const ai = document.createElement("div");
+        ai.className = "bubble ai";
+        chat.appendChild(ai);
+        const answer = "Saturday hours are 7:00am – 6:00pm.";
+        let i = 0;
+        const t = setInterval(() => {
+          ai.textContent = answer.slice(0, ++i);
+          if (i >= answer.length) {
+            clearInterval(t);
+            const tag = document.createElement("div");
+            tag.className = "tag good";
+            tag.textContent = "✓ Correct — but only because you just pasted it.";
+            ai.appendChild(tag);
+            // Reveal the cost + the MCP contrast
+            $("manualTake").style.display = "block";
+            $("mcpCard").style.display = "block";
+          }
+        }, 26);
+      }
 
-      load();
+      // Step 3 — scrape mockup: screenshot sweep, then a warning
+      function playScrape(btn) {
+        btn.disabled = true;
+        const shot = $("scrapeShot"), warn = $("scrapeWarn");
+        shot.classList.remove("flash"); warn.classList.remove("show");
+        void shot.offsetWidth; // restart animation
+        shot.classList.add("flash");
+        setTimeout(() => warn.classList.add("show"), 1000);
+        setTimeout(() => { btn.disabled = false; }, 1400);
+      }
+      // Step 3 — MCP mockup: packets travel, nodes light up green
+      function playMcpWay(btn) {
+        btn.disabled = true;
+        const reset = ["pAgent","pMcp","pData"].map($);
+        reset.forEach((n) => n.classList.remove("lit"));
+        const pkt1 = $("pkt1"), pkt2 = $("pkt2");
+        pkt1.classList.remove("go"); pkt2.classList.remove("go");
+        void pkt1.offsetWidth; void pkt2.offsetWidth;
+        $("pAgent").classList.add("lit");
+        pkt1.classList.add("go");
+        setTimeout(() => $("pMcp").classList.add("lit"), 950);
+        setTimeout(() => pkt2.classList.add("go"), 1050);
+        setTimeout(() => $("pData").classList.add("lit"), 2000);
+        setTimeout(() => { btn.disabled = false; }, 2300);
+      }
+
+      // Step 4 — real, recognizable MCPs with their ACTUAL published tools.
+      // Tool lists verified from each project's docs (Chrome DevTools MCP,
+      // Stripe Agent Toolkit, Google Workspace MCP, Higgsfield MCP).
+      const MCPS = [
+        {
+          id: "chrome", dot: "🌐", name: "Chrome DevTools MCP", count: "26 tools",
+          connects: "Drives your live Chrome browser — navigate, read, click, debug.",
+          endpoints: ["navigate_page","take_snapshot","take_screenshot","click","fill","hover","list_pages","evaluate_script","list_network_requests","list_console_messages","performance_start_trace"],
+          ask: "Summarize the page I have open and pull out the 3 key numbers.",
+          tlabel: "Chrome DevTools MCP · calling tools",
+          calls: [
+            { ep: "take_snapshot", line: 'take_snapshot()                  // read the open page' },
+            { ep: "evaluate_script", line: 'evaluate_script("extract figures")' },
+          ],
+          answer: "Done — here's the page you have open in 3 lines, plus the figures it found: revenue +24% YoY, 1,200 new signups, churn down to 3.1%.",
+        },
+        {
+          id: "google", dot: "📁", name: "Google Workspace MCP", count: "Drive + Gmail",
+          connects: "Reaches into your Google Drive files and your Gmail.",
+          endpoints: ["drive.search_files","drive.read_file_content","gmail.search_threads","gmail.get_thread","gmail.create_draft","gmail.send_email","gmail.list_labels"],
+          ask: "Find last quarter's sales deck and the latest email from Acme.",
+          tlabel: "Google Workspace MCP · calling tools",
+          calls: [
+            { ep: "drive.search_files", line: 'drive.search_files("Q1 sales deck")' },
+            { ep: "gmail.search_threads", line: 'gmail.search_threads(from:"acme.com")' },
+          ],
+          answer: "Found 'Q1 Sales Deck.pptx' (edited Apr 2) in Drive, and Acme's email from yesterday about the renewal. Want me to draft a reply with create_draft?",
+        },
+        {
+          id: "stripe", dot: "💳", name: "Stripe MCP", count: "27 tools",
+          connects: "Reads your balance and runs real payment actions.",
+          endpoints: ["retrieve_balance","list_customers","create_customer","create_product","create_price","create_payment_link","create_invoice","finalize_invoice","create_subscription","cancel_subscription","create_refund","list_disputes","search_documentation"],
+          ask: "What's my available balance, and send Acme a $500 payment link.",
+          tlabel: "Stripe MCP · calling tools",
+          calls: [
+            { ep: "retrieve_balance", line: 'retrieve_balance()' },
+            { ep: "create_payment_link", line: 'create_payment_link(amount=50000, currency="usd")' },
+          ],
+          answer: "Your available balance is $48,250.00. Here's a $500 payment link for Acme, ready to send: https://buy.stripe.com/4gw… ",
+        },
+        {
+          id: "higgsfield", dot: "🎬", name: "Higgsfield MCP", count: "5 tools",
+          connects: "Generates AI images & video (Sora, Veo, Kling) from a prompt.",
+          endpoints: ["generate_image","generate_video","create_character","get_generation_status","list_characters"],
+          ask: "Make a 5-second vertical promo video of our new latte.",
+          tlabel: "Higgsfield MCP · calling tools",
+          calls: [
+            { ep: "generate_video", line: 'generate_video(prompt="steamy latte, cozy cafe", ratio="9:16", seconds=5)' },
+            { ep: "get_generation_status", line: 'get_generation_status(id="gen_8f2c…")' },
+          ],
+          answer: "Rendering a 9:16, 5-second clip with Veo 3.1… done. Here's your promo video, ready for Reels & TikTok. Want a version with a text overlay?",
+        },
+      ];
+      let activeMcp = 0;
+
+      function renderTabs() {
+        $("mcpTabs").innerHTML = MCPS.map((m, i) =>
+          `<div class="mcp-tab ${i === activeMcp ? "active" : ""}" data-i="${i}"><span class="dot">${m.dot}</span>${m.name}</div>`
+        ).join("");
+        document.querySelectorAll(".mcp-tab").forEach((t) =>
+          t.addEventListener("click", () => { activeMcp = Number(t.dataset.i); renderMcp(); })
+        );
+      }
+      function renderMcp() {
+        renderTabs();
+        const m = MCPS[activeMcp];
+        $("mcpName").textContent = m.name;
+        $("mcpCount").textContent = m.count;
+        $("mcpConnects").textContent = m.connects;
+        $("mcpEndpoints").innerHTML = m.endpoints
+          .map((e) => `<span class="ep" data-ep="${e}">${e}</span>`)
+          .join("");
+        $("mcpChat").innerHTML = `<div class="bubble user">${m.ask}</div>`;
+        $("mcpRun").disabled = false;
+        $("mcpRun").textContent = "▶ Ask it";
+      }
+      function runMcp() {
+        const m = MCPS[activeMcp];
+        const chat = $("mcpChat");
+        $("mcpRun").disabled = true;
+        chat.innerHTML = `<div class="bubble user">${m.ask}</div>`;
+        document.querySelectorAll(".ep").forEach((e) => e.classList.remove("called"));
+
+        const tool = document.createElement("div");
+        tool.className = "bubble tool";
+        tool.innerHTML = `<span class="tlabel">${m.tlabel}</span>`;
+        let delay = 350;
+        m.calls.forEach((c, idx) => {
+          setTimeout(() => {
+            if (idx === 0) chat.appendChild(tool);
+            tool.appendChild(document.createTextNode((idx ? "\n" : "") + c.line));
+            const ep = document.querySelector(`.ep[data-ep="${c.ep}"]`);
+            if (ep) ep.classList.add("called");
+          }, delay);
+          delay += 750;
+        });
+
+        setTimeout(() => {
+          const ai = document.createElement("div");
+          ai.className = "bubble ai";
+          chat.appendChild(ai);
+          let i = 0;
+          const t = setInterval(() => {
+            ai.textContent = m.answer.slice(0, ++i);
+            if (i >= m.answer.length) {
+              clearInterval(t);
+              $("mcpRun").disabled = false;
+              $("mcpRun").textContent = "↻ Ask again";
+            }
+          }, 16);
+        }, delay + 250);
+      }
+      $("mcpRun").addEventListener("click", runMcp);
+      renderMcp();
+
+      buildDots();
+      go(0);
     </script>
   </body>
 </html>

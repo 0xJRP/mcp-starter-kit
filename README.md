@@ -121,12 +121,12 @@ email)? That's exactly the kind of thing we build.
 
 ---
 
-## 🐇 Built by Rabbithole
+## 🐇 Built by Rabbithole — [rabbithole.consulting](https://rabbithole.consulting)
 
 We help small and medium businesses put AI to work — safely, and in plain
 English. This is **Day 1** of our 30-day series of free, working AI kits.
 
 **Want this set up for your business, with your real tools connected?**
-👉 [Reach out to Rabbithole](#) *(add your link)*
+👉 [rabbithole.consulting](https://rabbithole.consulting)
 
 *Free to use under the MIT License. Built to be opened, edited, and run by real business owners.*
